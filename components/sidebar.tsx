@@ -22,6 +22,7 @@ const sidebar = ({user}: SiderbarProps) => {
             </Link>
             {sidebarLinks.map((item)=>{
                 const isActive=pathname === item.route || pathname.startsWith(`${item.route}/`)
+                //either pathname and item route are same or we are somewhere in sub component of item route then that pathname will starts with item.route
                 return(
                     <Link href={item.route} key={item.label}
               className={cn('sidebar-link', { 'bg-bank-gradient': isActive })}
