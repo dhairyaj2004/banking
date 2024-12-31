@@ -10,10 +10,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+const authformSchema=formSchema('sign-up')
 interface CustomFormProps {
-  control: Control<z.infer<typeof formSchema>>;
-  name: FieldPath<z.infer<typeof formSchema>>;
-  label: FieldPath<z.infer<typeof formSchema>>;
+  control: Control<z.infer<typeof authformSchema>>;
+  name: FieldPath<z.infer<typeof authformSchema>>;
+  label: 'Email' | 'Password' | 'First Name' | 'Last Name' | 'Address' | 'City' | 'State' | 'Postal Code' | 'Date of Birth' | 'SSN';
   placeholder: string;
 }
 
@@ -25,16 +26,18 @@ const CustomForm = ({ control, name, label, placeholder }: CustomFormProps) => {
         name={name}
         render={({ field }) => (
           <div className="form-item">
-            <FormLabel className="form-label">{label}</FormLabel>
-            <div>
-              <FormControl className="flex flex-col w-full">
-                <Input
-                  placeholder={placeholder}
-                  type={name==="Password"?'password':'text'}
-                  className="input-class"
-                  {...field}
-                />
-              </FormControl>
+            <FormLabel className="form-label">
+            {label}
+          </FormLabel>
+          <div className="flex w-full flex-col">
+            <FormControl>
+              <Input 
+                placeholder={placeholder}
+                className="input-class"
+                type={name === 'Password' ? 'password' : 'text'}
+                {...field}
+              />
+            </FormControl>
               <FormMessage className="form-message mt-2"></FormMessage>
             </div>
           </div>
