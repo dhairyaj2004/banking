@@ -3,6 +3,7 @@ import React, { use, useState } from "react";
 import Link from "next/link";
 import CustomForm from "./customForm";
 import { formSchema } from "@/lib/utils";
+import { signIn,signUp } from "@/lib/actions/user.actions";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,11 +11,13 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { Loader2 } from "lucide-react";
+import  { useRouter } from "next/navigation";
 
 const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const authformSchema = formSchema(type);
+  const router=useRouter()
   const form = useForm<z.infer<typeof authformSchema>>({
     resolver: zodResolver(authformSchema),
     defaultValues: type === "sign-up"
@@ -36,10 +39,25 @@ const AuthForm = ({ type }: { type: string }) => {
       },
   });
 
-  function onSubmit(values: z.infer<typeof authformSchema>) {
+  const onSubmit = async (data: z.infer<typeof authformSchema>)=> {
     setIsLoading(true);
   try {
-    console.log("Form submitted:", values);
+    console.log("Form submitted:", data);
+    if(type==='sign-in'){
+      const response={
+        email: data.Email,
+        password: data.Password,
+      }
+      if(response){
+        router.push('/')
+      }
+    }
+    if(type==='sign-up'){
+      const newUser=await signUp(data)
+      setUser(newUser)
+    }
+    
+      alert('Invalid form type')
   } catch (error) {
     console.error("Sign-in error:", error);
   } finally {
