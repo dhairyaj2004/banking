@@ -18,6 +18,7 @@ const AuthForm = ({ type }: { type: string }) => {
   const [isLoading, setIsLoading] = useState(false);
   const authformSchema = formSchema(type);
   const router=useRouter()
+  
   const form = useForm<z.infer<typeof authformSchema>>({
     resolver: zodResolver(authformSchema),
     defaultValues: type === "sign-up"
@@ -43,21 +44,20 @@ const AuthForm = ({ type }: { type: string }) => {
     setIsLoading(true);
   try {
     console.log("Form submitted:", data);
-    if(type==='sign-in'){
-      const response={
-        email: data.Email,
-        password: data.Password,
-      }
-      if(response){
-        router.push('/')
-      }
-    }
     if(type==='sign-up'){
       const newUser=await signUp(data)
+      
       setUser(newUser)
     }
-    
-      alert('Invalid form type')
+    // if(type==='sign-in'){
+    //   const response={
+    //     email: data.Email,
+    //     password: data.Password,
+    //   }
+    //   if(response){
+    //     router.push('/')
+    //   }
+    // }
   } catch (error) {
     console.error("Sign-in error:", error);
   } finally {
