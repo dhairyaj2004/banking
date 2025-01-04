@@ -3,7 +3,7 @@ import React, { use, useState } from "react";
 import Link from "next/link";
 import CustomForm from "./customForm";
 import { formSchema } from "@/lib/utils";
-import { signIn,signUp } from "@/lib/actions/user.actions";
+import { signIn,signUp} from "@/lib/actions/user.actions";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -18,7 +18,6 @@ const AuthForm = ({ type }: { type: string }) => {
   const [isLoading, setIsLoading] = useState(false);
   const authformSchema = formSchema(type);
   const router=useRouter()
-  
   const form = useForm<z.infer<typeof authformSchema>>({
     resolver: zodResolver(authformSchema),
     defaultValues: type === "sign-up"
@@ -46,20 +45,19 @@ const AuthForm = ({ type }: { type: string }) => {
     console.log("Form submitted:", data);
     if(type==='sign-up'){
       const newUser=await signUp(data)
-      
       setUser(newUser)
     }
-    // if(type==='sign-in'){
-    //   const response={
-    //     email: data.Email,
-    //     password: data.Password,
-    //   }
-    //   if(response){
-    //     router.push('/')
-    //   }
-    // }
+    if(type==='sign-in'){
+      const response=await signIn({
+        Email: data.Email,
+        Password: data.Password,
+      })
+      if(response){
+        router.push('/')
+      }
+    }
   } catch (error) {
-    console.error("Sign-in error:", error);
+    console.error( error);
   } finally {
     setIsLoading(false);
   }
@@ -84,6 +82,7 @@ const AuthForm = ({ type }: { type: string }) => {
                 ? "Link your account to MetaBanking"
                 : "Enter your details to continue with MetaBanking"}
             </p>
+
           </h2>
         </div>
       </header>
