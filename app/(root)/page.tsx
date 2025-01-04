@@ -4,8 +4,8 @@ import TotalBalanceBox from '../../components/TotalBalanceBox'
 import Rightsidebar from '@/components/Rightsidebar'
 import { getLoggedInUser } from '../../lib/actions/user.actions';
 async function Home() {
-  const loggedIn =await getLoggedInUser()
-  console.log(loggedIn)
+  const loggedIn = await getLoggedInUser();
+  console.log(loggedIn ? "Logged-in user:" : "No logged-in user.", loggedIn);
   return (
     <section className='home'>
         <div className='home-content'>
